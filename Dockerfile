@@ -22,7 +22,10 @@ RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak && \
     sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php/7.0/fpm/php.ini && \
     sed -i '/^listen = /clisten = 0.0.0.0:9000' /etc/php/7.0/fpm/pool.d/www.conf && \
     sed -i '/^listen.allowed_clients/c;listen.allowed_clients =' /etc/php/7.0/fpm/pool.d/www.conf && \
-    sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php/7.0/fpm/pool.d/www.conf
+    sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php/7.0/fpm/pool.d/www.conf && \
+    sed -i -e 's/;error_log = php_errors.log/error_log = \/var\/log\/php_errors.log/' /etc/php/7.0/fpm/php.ini && \
+    sed -i -e 's/^allow_url_fopen/;allow_url_fopen/' /etc/php/7.0/fpm/php.ini && \
+    sed -i -e 's/;open_basedir =/open_basedir = \/var\/www\/html:\/data:\/tmp/' /etc/php/7.0/fpm/php.ini
 COPY start.sh /start.sh
 
 RUN echo "Creating Database" && \
